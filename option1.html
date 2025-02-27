@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust - Your Journey Starts Here</title>
+
+    <style>
+        /*  Resets (Normalize.css inspired, but more concise for this example) */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth; /*  Smooth scrolling for anchor links */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /*  Modern, readable font */
+            line-height: 1.6;
+            background-color: #f4f4f8; /*  Light background */
+            color: #333; /*  Dark text for contrast */
+            overflow-x: hidden; /* Prevent horizontal scrollbar */
+        }
+
+        /*  Modern Color Palette (Coolors.co inspired) */
+        :root {
+            --primary-color: #2978b5;  /*  Calm blue */
+            --secondary-color: #f29f05; /*  Vibrant yellow-orange */
+            --accent-color: #d1495b; /*  Coral, for highlights */
+            --text-color-light: #fff;
+            --background-dark: #1a1a2e; /*  Dark section background */
+        }
+
+
+        /*  Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem; /*  Consistent padding on all sides */
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: 30px; /*  Rounded buttons */
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;  /* Smooth transitions */
+        }
+        .btn:hover{
+            transform: translateY(-3px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--text-color-light);
+        }
+        .btn-primary:hover{
+            background-color: #1a5280;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color-light);
+        }
+        .btn-secondary:hover {
+          background-color: #c77f00;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .btn-outline:hover {
+          background-color: var(--primary-color);
+          color: white;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-gradient {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            /*  Fallback for older browsers */
+            color: var(--primary-color);
+        }
+
+        /*  Header */
+        .header {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%); /*  Subtle gradient, semi-transparent */
+            backdrop-filter: blur(10px);  /*  Blur effect (works in modern browsers) */
+            -webkit-backdrop-filter: blur(10px); /* Safari */
+            position: sticky; /*  Sticky header */
+            top: 0;
+            z-index: 100; /*  Ensure it's above other content */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /*  Subtle shadow */
+            padding: 1rem 0;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s;
+        }
+        .logo:hover {
+          color: var(--secondary-color)
+        }
+
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;  /*  Consistent spacing between links */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover,
+        .nav-links a.active { /*  Highlight the active link */
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            padding: 4rem 0;
+            min-height: 80vh; /*  Full viewport height (minus header) */
+
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
+        .hero-image-container {
+            flex: 1;
+            text-align: center;  /*  Center the image */
+            position: relative;
+        }
+
+        .hero-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px; /* Rounded image corners */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /*  Subtle shadow */
+            animation: float 5s ease-in-out infinite;
+        }
+
+
+        /* App Store Buttons */
+        .app-store-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .app-store-buttons img {
+            height: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .app-store-buttons img:hover {
+          transform: scale(1.05);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background-color: var(--background-dark); /* Dark background */
+            color: var(--text-color-light);
+        }
+
+        .features-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--text-color-light)
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+            gap: 2rem;
+        }
+
+        .feature {
+            background-color: rgba(255, 255, 255, 0.1);  /*  Slightly transparent background */
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);  /*  Subtle shadow */
+            transition: transform 0.3s ease;
+        }
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            font-size: 1rem;
+            color: #ddd;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 6rem 0;
+            background-color: #f9f9f9;
+        }
+
+        .testimonials-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+        }
+
+        .testimonials-slider {
+            /*  Basic styling.  A real slider would require JS (like Swiper.js) */
+            display: flex;
+            overflow-x: auto;  /*  Horizontal scrolling */
+            gap: 2rem;
+            padding-bottom: 2rem; /* Add some padding at the bottom for scrollbar */
+            scroll-snap-type: x mandatory; /* Enable scroll snapping */
+        }
+
+        .testimonial {
+            flex: 0 0 80%; /*  Each testimonial takes 80% of the container width */
+            /* For larger screens, use a fixed width */
+            min-width: 300px;  /* Minimum width */
+            max-width: 400px; /* Maximum width */
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            scroll-snap-align: start; /*  Align to the start when snapping */
+        }
+
+        .testimonial-quote {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #555;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Call to Action (CTA) Section */
+        .cta {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            padding: 4rem 0;
+            color: var(--text-color-light);
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--background-dark);
+            color: #bbb;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #bbb;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-color-light);
+        }
+
+        .footer-copyright {
+            font-size: 0.9rem;
+        }
+
+
+        /*  Hamburger Menu (for mobile) */
+        .hamburger {
+            display: none; /*  Hidden by default */
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Hide by default on small screens */
+                flex-direction: column; /* Stack links vertically */
+                position: absolute;
+                top: 60px; /*  Position below the header */
+                left: 0;
+                width: 100%;
+                background-color: rgba(255, 255, 255, 0.95); /*  Slightly transparent */
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                z-index: 50; /* Ensure it's above other content, but below the header */
+                padding: 1rem 0;
+            }
+
+            .nav-links.active {
+              display: flex;
+            }
+
+            .nav-links li{
+                padding: .5rem 0;
+                text-align: center;
+            }
+
+
+            .hamburger {
+                display: block; /*  Show on small screens */
+            }
+
+            .hero {
+                flex-direction: column-reverse; /*  Image on top, content below */
+            }
+
+            .hero-title {
+                font-size: 2.5rem; /*  Smaller font size */
+            }
+
+            .app-store-buttons {
+                justify-content: center; /* Center the buttons */
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr; /*  Single column layout */
+            }
+
+            .testimonial {
+                flex: 0 0 90%; /*  Testimonials take more width */
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /*  Progressive Enhancement:  Add more styles here for features that are not widely supported yet */
+        /*  Example:  Using @supports to check for backdrop-filter support */
+        @supports (backdrop-filter: blur(10px)) {
+            .header {
+                /*  Styles for browsers that support backdrop-filter */
+                background: rgba(255, 255, 255, 0.6); /*  Less transparency needed */
+            }
+        }
+    </style>
+
+    <!--  Font Awesome (for icons - optional, but adds a nice touch) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Font - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container header-content">
+            <a href="#" class="logo">Wanderlust</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#pricing">Pricing</a></li>  <!-- Example of another potential section -->
+                    <li><a href="#contact" class="btn-outline">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title text-gradient">Explore the World <br> With Ease</h1>
+            <p class="hero-description">
+                Discover new destinations, plan your trips, and share your adventures with Wanderlust.
+                Your perfect travel companion is just a tap away.
+            </p>
+            <div class="app-store-buttons">
+                <a href="https://www.apple.com/app-store/" target="_blank"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store"></a>
+                <a href="https://play.google.com/store/apps" target="_blank"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" style="height: 75px;"></a>  <!-- Adjusted height to be consistent -->
+            </div>
+        </div>
+        <div class="hero-image-container">
+          <img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1917&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Travel illustration" class="hero-image">
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="features-title text-center">Amazing Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="feature-icon fas fa-map-marked-alt"></i>
+                    <h3 class="feature-title">Smart Itineraries</h3>
+                    <p class="feature-description">Automatically generated itineraries based on your preferences.</p>
+                </div>
+                <div class="feature">
+                    <i class="feature-icon fas fa-globe-americas"></i>
+                    <h3 class="feature-title">Offline Maps</h3>
+                    <p class="feature-description">Access maps and information even without an internet connection.</p>
+                </div>
+                <div class="feature">
+                    <i class="feature-icon fas fa-users"></i>
+                    <h3 class="feature-title">Community Sharing</h3>
+                    <p class="feature-description">Share your travel experiences and connect with other travelers.</p>
+                </div>
+                <div class="feature">
+                    <i class="feature-icon fas fa-hotel"></i>
+                    <h3 class="feature-title">Hotel Bookings</h3>
+                    <p class="feature-description">Find and book the best hotels directly within the app.</p>
+                </div>
+                <div class="feature">
+                    <i class="feature-icon fas fa-plane"></i>
+                    <h3 class="feature-title">Flight Tracking</h3>
+                    <p class="feature-description">Real-time flight tracking and updates.</p>
+                </div>
+                <div class="feature">
+                    <i class="feature-icon fas fa-language"></i>
+                  <h3 class="feature-title">Multi-language Support</h3>
+                  <p class="feature-description">Use the app in your preffered language</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="testimonials-title text-center">What Our Users Say</h2>
+            <div class="testimonials-slider">
+                <div class="testimonial">
+                    <p class="testimonial-quote">"Wanderlust made planning my trip to Europe so much easier! I loved the offline maps feature."</p>
+                    <p class="testimonial-author">- Sarah J.</p>
+                </div>
+                <div class="testimonial">
+                    <p class="testimonial-quote">"The best travel app I've ever used. The community sharing feature is amazing!"</p>
+                    <p class="testimonial-author">- John D.</p>
+                </div>
+                <div class="testimonial">
+                    <p class="testimonial-quote">"I was able to find great deals on hotels and flights. Highly recommend!"</p>
+                    <p class="testimonial-author">- Emily R.</p>
+                </div>
+                 <div class="testimonial">
+                    <p class="testimonial-quote">"The app is beautifully designed and really easy to use.  Five stars!"</p>
+                    <p class="testimonial-author">- David B.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta" id="contact">
+        <div class="container">
+            <h2 class="cta-title">Start Your Adventure Today</h2>
+            <p class="cta-description">Download Wanderlust and begin exploring the world!</p>
+            <div class="app-store-buttons" style="justify-content: center">
+              <a href="https://www.apple.com/app-store/" target="_blank"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store"></a>
+              <a href="https://play.google.com/store/apps" target="_blank"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" style="height: 75px;"></a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <ul class="footer-links">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+            <p class="footer-copyright">© 2023 Wanderlust. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        //  Hamburger Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Smooth scrolling for anchor links (optional, if you want it)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // Close the mobile menu if it's open
+            if (navLinks.classList.contains('active')) {
+              navLinks.classList.remove('active');
+            }
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+              behavior: 'smooth'
+            });
+          });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+           const isClickInsideNav = navLinks.contains(e.target) || hamburger.contains(e.target);
+
+            if (!isClickInsideNav && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+
+    </script>
+</body>
+</html>
