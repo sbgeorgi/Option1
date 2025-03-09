@@ -1,589 +1,1133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlust - Your Journey Starts Here</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NomadSwipe - Your Journey Starts Here</title>
 
-    <style>
-        /*  Resets (Normalize.css inspired, but more concise for this example) */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <style>
+    /* Resets (Normalize.css inspired, but more concise for this example) */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        html {
-            scroll-behavior: smooth; /*  Smooth scrolling for anchor links */
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif; /*  Modern, readable font */
-            line-height: 1.6;
-            background-color: #f4f4f8; /*  Light background */
-            color: #333; /*  Dark text for contrast */
-            overflow-x: hidden; /* Prevent horizontal scrollbar */
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f8;
+      color: #333;
+      overflow-x: hidden;
+    }
 
-        /*  Modern Color Palette (Coolors.co inspired) */
-        :root {
-            --primary-color: #2978b5;  /*  Calm blue */
-            --secondary-color: #f29f05; /*  Vibrant yellow-orange */
-            --accent-color: #d1495b; /*  Coral, for highlights */
-            --text-color-light: #fff;
-            --background-dark: #1a1a2e; /*  Dark section background */
-        }
+    /* Modern Color Palette & Variables */
+    :root {
+      --primary-color: #2978b5;
+      --secondary-color: #f29f05;
+      --accent-color: #d1495b;
+      --text-color-light: #fff;
+      --background-dark: #1a1a2e;
+      --gradient-line: linear-gradient(45deg, #2978b5, #f29f05);
+    }
 
+    /* Utility Classes */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
 
-        /*  Utility Classes */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem; /*  Consistent padding on all sides */
-        }
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.8rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 1.8rem;
-            border: none;
-            border-radius: 30px; /*  Rounded buttons */
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.3s ease, transform 0.2s ease;  /* Smooth transitions */
-        }
-        .btn:hover{
-            transform: translateY(-3px);
-        }
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: var(--text-color-light);
+    }
+    .btn-primary:hover {
+      background-color: #1a5280;
+    }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: var(--text-color-light);
-        }
-        .btn-primary:hover{
-            background-color: #1a5280;
-        }
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: var(--text-color-light);
+    }
+    .btn-secondary:hover {
+      background-color: #c77f00;
+    }
 
-        .btn-secondary {
-            background-color: var(--secondary-color);
-            color: var(--text-color-light);
-        }
-        .btn-secondary:hover {
-          background-color: #c77f00;
-        }
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: var(--text-color-light);
+    }
 
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-        .btn-outline:hover {
-          background-color: var(--primary-color);
-          color: white;
-        }
+    .text-center {
+      text-align: center;
+    }
 
-        .text-center {
-            text-align: center;
-        }
+    .text-gradient {
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: var(--primary-color);
+    }
 
-        .text-gradient {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            /*  Fallback for older browsers */
-            color: var(--primary-color);
-        }
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 1rem 0;
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--primary-color);
+      transition: color 0.3s;
+    }
+    .logo:hover {
+      color: var(--secondary-color);
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--primary-color);
+    }
 
-        /*  Header */
-        .header {
-            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%); /*  Subtle gradient, semi-transparent */
-            backdrop-filter: blur(10px);  /*  Blur effect (works in modern browsers) */
-            -webkit-backdrop-filter: blur(10px); /* Safari */
-            position: sticky; /*  Sticky header */
-            top: 0;
-            z-index: 100; /*  Ensure it's above other content */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /*  Subtle shadow */
-            padding: 1rem 0;
-        }
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    /* Hero Section */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4rem;
+      padding: 4rem 0;
+      min-height: 80vh;
+    }
+    .hero-content {
+      flex: 1;
+    }
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      letter-spacing: 0.5px;
+    }
+    .hero-description {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #666;
+    }
+    .hero-image-container {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+    .hero-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      animation: float 5s ease-in-out infinite;
+    }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-decoration: none;
-            color: var(--primary-color);
-            transition: color 0.3s;
-        }
-        .logo:hover {
-          color: var(--secondary-color)
-        }
+    /* App Store Buttons */
+    .app-store-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .app-store-buttons img {
+      height: 50px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .app-store-buttons img:hover {
+      transform: scale(1.05);
+    }
 
+    /* Features Section */
+    .features {
+      padding: 6rem 0;
+      background-color: var(--background-dark);
+      color: var(--text-color-light);
+    }
+    .features-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .feature {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+    .feature:hover {
+      transform: translateY(-5px);
+    }
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+    }
+    .feature-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .feature-description {
+      font-size: 1rem;
+      color: #ddd;
+    }
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;  /*  Consistent spacing between links */
-        }
+    /* How It Works Section */
+    .how-it-works {
+      padding: 6rem 0;
+      background-color: #f4f4f8;
+      color: #333;
+      position: relative;
+    }
+    .how-it-works .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .how-it-works .section-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 3rem;
+      text-align: center;
+      color: #666;
+    }
+    .steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-top: 60px;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 5%;
+      right: 5%;
+      height: 2px;
+      background: var(--gradient-line);
+      z-index: 0;
+    }
+    .step {
+      flex: 1 1 21%;
+      text-align: center;
+      padding: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .step .step-number {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1rem;
+      background: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color-light);
+      font-size: 1.5rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+    }
+    .step .step-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .step .step-description {
+      font-size: 1rem;
+      color: #666;
+    }
 
-        .nav-links a {
-            text-decoration: none;
-            color: #555;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        .nav-links a:hover,
-        .nav-links a.active { /*  Highlight the active link */
-            color: var(--primary-color);
-        }
+    /* App Showcase Section (Integrated from script 2) */
+    .app-showcase {
+      padding: 80px 0;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .swipe-demo {
+      position: relative;
+      max-width: 400px;
+      margin: 0 auto;
+      perspective: 1000px;
+    }
+    .card-stack {
+      position: relative;
+      width: 300px;
+      height: 450px;
+      margin: 0 auto;
+    }
+    .card {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));
+      z-index: 1;
+    }
+    .card-content {
+      position: relative;
+      z-index: 2;
+      padding: 16px;
+    }
+    .card-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .card-rating {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-rating .stars {
+      color: gold;
+      text-align: left;
+    }
+    .card-rating .rating-value {
+      margin-right: 8px;
+    }
+    .card-rating .price {
+      margin-left: auto;
+    }
+    /* Card stacking classes */
+    .card-1 {
+      transform: translateZ(0px) translateX(0) rotate(0deg);
+      z-index: 4;
+    }
+    .card-2 {
+      transform: translateZ(-20px) translateX(-10px) rotate(-5deg);
+      z-index: 3;
+      opacity: 0.9;
+    }
+    .card-3 {
+      transform: translateZ(-40px) translateX(-20px) rotate(-10deg);
+      z-index: 2;
+      opacity: 0.8;
+    }
+    .card-4 {
+      transform: translateZ(-60px) translateX(-30px) rotate(-15deg);
+      z-index: 1;
+      opacity: 0.7;
+    }
+    /* Swipe Animation Classes */
+    .swipe-out-left {
+      transform: translateX(-1000px) rotate(-30deg);
+      opacity: 0;
+    }
+    .swipe-out-right {
+      transform: translateX(1000px) rotate(30deg);
+      opacity: 0;
+    }
+    .swipe-actions {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .swipe-button {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .swipe-left {
+      background-color: #ff4757;
+      color: #fff;
+    }
+    .swipe-right {
+      background-color: var(--secondary-color);
+      color: #fff;
+    }
+    .swipe-button:hover {
+      transform: scale(1.1);
+    }
 
-        /* Hero Section */
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 4rem;
-            padding: 4rem 0;
-            min-height: 80vh; /*  Full viewport height (minus header) */
+    /* Testimonials Section */
+    .testimonials {
+      padding: 6rem 0;
+      background-color: #f9f9f9;
+    }
+    .testimonials-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+    .testimonials-slider {
+      display: flex;
+      overflow-x: auto;
+      gap: 2rem;
+      padding-bottom: 2rem;
+      scroll-snap-type: x mandatory;
+    }
+    .testimonial {
+      flex: 0 0 80%;
+      min-width: 300px;
+      max-width: 400px;
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      scroll-snap-align: start;
+    }
+    .testimonial-quote {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #555;
+      font-style: italic;
+    }
+    .testimonial-author {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
 
-        }
+    /* Call to Action (CTA) Section */
+    .cta {
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      padding: 4rem 0;
+      color: var(--text-color-light);
+      text-align: center;
+    }
+    .cta-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .cta-description {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
 
-        .hero-content {
-            flex: 1;
-        }
+    /* Footer Section */
+    .footer {
+      background-color: var(--background-dark);
+      color: var(--text-color-light);
+      padding: 3rem 0;
+    }
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-decoration: none;
+      margin-bottom: 1rem;
+    }
+    .footer-description {
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+    .social-links a {
+      color: var(--text-color-light);
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+    }
+    .social-links a:hover {
+      color: var(--secondary-color);
+    }
+    .footer-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+    .footer-links a:hover {
+      color: var(--primary-color);
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .contact-info .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .footer .copyright {
+      text-align: center;
+      font-size: 0.8rem;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 1rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
 
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
+    /* Hamburger Menu (for mobile) */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
 
-        .hero-description {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: #666;
-        }
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1rem; /* Adjust container padding on mobile */
+      }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        z-index: 50;
+        padding: 1rem 0;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .nav-links li {
+        padding: 0.5rem 0;
+        text-align: center;
+      }
+      .hamburger {
+        display: block;
+      }
+      .hero {
+        flex-direction: column-reverse;
+        padding: 2rem 0; /* Reduce hero padding on mobile */
+        text-align: center; /* Center text in hero on mobile */
+      }
+      .hero-content {
+        margin-bottom: 2rem; /* Add margin below hero content for spacing */
+      }
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .hero-description {
+        font-size: 1.1rem; /* Slightly smaller description on mobile */
+      }
+      .hero-image-container {
+        max-width: 80%; /* Limit hero image width on mobile */
+        margin: 0 auto; /* Center hero image on mobile */
+      }
+      .app-store-buttons {
+        justify-content: center;
+      }
+      .app-store-buttons img {
+        height: 40px; /* Slightly smaller app store badges on mobile */
+      }
+      .features {
+        padding: 4rem 0; /* Reduce features section padding on mobile */
+      }
+      .features-title {
+        font-size: 2rem; /* Reduce features title size on mobile */
+        margin-bottom: 2rem; /* Reduce margin below features title on mobile */
+      }
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .feature {
+        padding: 1.5rem; /* Reduce feature padding on mobile */
+      }
+      .feature-icon {
+        font-size: 2rem; /* Reduce feature icon size on mobile */
+      }
+      .feature-title {
+        font-size: 1.3rem; /* Reduce feature title size on mobile */
+      }
+      .feature-description {
+        font-size: 0.95rem; /* Slightly smaller feature description on mobile */
+      }
+      .how-it-works {
+        padding: 4rem 0; /* Reduce how-it-works section padding on mobile */
+      }
+      .how-it-works .section-title {
+        font-size: 2rem; /* Reduce how-it-works title size on mobile */
+      }
+      .how-it-works .section-subtitle {
+        font-size: 1.1rem; /* Slightly smaller how-it-works subtitle on mobile */
+        margin-bottom: 2rem; /* Reduce margin below subtitle on mobile */
+      }
+      .steps {
+        flex-direction: column; /* Stack steps vertically on mobile */
+        align-items: center; /* Center steps on mobile */
+        margin-top: 30px; /* Reduce top margin for steps on mobile */
+      }
+      .steps::before {
+        display: none; /* Hide the line connecting steps on mobile */
+      }
+      .step {
+        flex: 0 0 auto; /* Allow step to auto-size in column layout */
+        width: 80%; /* Limit step width on mobile */
+        margin-bottom: 2rem; /* Add margin between steps on mobile */
+      }
+      .step:last-child {
+        margin-bottom: 0; /* Remove margin from last step */
+      }
+      .step .step-number {
+        width: 50px; /* Reduce step number size on mobile */
+        height: 50px;
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem; /* Reduce margin below step number on mobile */
+      }
+      .step .step-title {
+        font-size: 1.1rem; /* Reduce step title size on mobile */
+      }
+      .step .step-description {
+        font-size: 0.9rem; /* Slightly smaller step description on mobile */
+      }
+      .app-showcase {
+        padding: 60px 0; /* Reduce app showcase padding on mobile */
+      }
+      .app-showcase .section-title {
+        font-size: 2rem; /* Reduce app showcase title size on mobile */
+      }
+      .app-showcase .section-subtitle {
+        font-size: 1.1rem; /* Slightly smaller app showcase subtitle on mobile */
+      }
+      .swipe-demo {
+        max-width: 90%; /* Make swipe demo responsive width */
+      }
+      .card-stack {
+        width: 80%; /* Make card stack responsive width */
+        max-width: 300px; /* Keep max width for larger mobile screens */
+        height: auto; /* Adjust height automatically */
+        aspect-ratio: 3/4; /* Maintain card aspect ratio */
+      }
+      .card {
+        border-radius: 12px; /* Slightly smaller card border radius on mobile */
+      }
+      .card-content {
+        padding: 12px; /* Reduce card content padding on mobile */
+      }
+      .card-title {
+        font-size: 18px; /* Reduce card title size on mobile */
+      }
+      .card-rating {
+        font-size: 14px; /* Reduce card rating size on mobile */
+      }
+      .swipe-actions {
+        margin-top: 30px; /* Reduce swipe actions top margin on mobile */
+        gap: 16px; /* Reduce gap between swipe buttons on mobile */
+      }
+      .swipe-button {
+        width: 50px; /* Reduce swipe button size on mobile */
+        height: 50px;
+        font-size: 20px; /* Reduce swipe button icon size on mobile */
+      }
+      .testimonials {
+        padding: 4rem 0; /* Reduce testimonials section padding on mobile */
+      }
+      .testimonials-title {
+        font-size: 2rem; /* Reduce testimonials title size on mobile */
+        margin-bottom: 2rem; /* Reduce margin below testimonials title on mobile */
+      }
+      .testimonial {
+        flex: 0 0 95%; /* Make testimonial wider on mobile */
+        padding: 1.5rem; /* Reduce testimonial padding on mobile */
+        border-radius: 12px; /* Slightly smaller testimonial border radius on mobile */
+      }
+      .testimonial-quote {
+        font-size: 1rem; /* Slightly smaller testimonial quote size on mobile */
+      }
+      .cta {
+        padding: 3rem 0; /* Reduce CTA section padding on mobile */
+      }
+      .cta-title {
+        font-size: 2rem; /* Reduce CTA title size on mobile */
+      }
+      .cta-description {
+        font-size: 1.1rem; /* Slightly smaller CTA description on mobile */
+      }
+      .footer {
+        padding: 2rem 0; /* Reduce footer section padding on mobile */
+      }
+      .footer-container {
+        grid-template-columns: 1fr; /* Stack footer columns on mobile */
+        text-align: center; /* Center text in footer columns on mobile */
+      }
+      .footer-column {
+        margin-bottom: 2rem; /* Add margin below footer columns on mobile */
+      }
+      .footer-column:last-child {
+        margin-bottom: 0; /* Remove margin from last footer column */
+      }
+      .footer-logo {
+        font-size: 1.6rem; /* Reduce footer logo size on mobile */
+        margin-bottom: 0.8rem; /* Reduce margin below footer logo on mobile */
+      }
+      .footer-description {
+        font-size: 0.9rem; /* Slightly smaller footer description on mobile */
+      }
+      .footer-title {
+        font-size: 1rem; /* Reduce footer title size on mobile */
+      }
+      .footer-links a, .contact-info .contact-item {
+        font-size: 0.9rem; /* Slightly smaller footer links and contact info on mobile */
+      }
+      .social-links {
+        justify-content: center; /* Center social links on mobile */
+      }
+      .copyright {
+        font-size: 0.8rem; /* Reduce copyright size on mobile */
+      }
+    }
 
-        .hero-image-container {
-            flex: 1;
-            text-align: center;  /*  Center the image */
-            position: relative;
-        }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
 
-        .hero-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 20px; /* Rounded image corners */
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /*  Subtle shadow */
-            animation: float 5s ease-in-out infinite;
-        }
+    @supports (backdrop-filter: blur(10px)) {
+      .header {
+        background: rgba(255, 255, 255, 0.6);
+      }
+    }
+  </style>
 
-
-        /* App Store Buttons */
-        .app-store-buttons {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .app-store-buttons img {
-            height: 50px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        .app-store-buttons img:hover {
-          transform: scale(1.05);
-        }
-
-        /* Features Section */
-        .features {
-            padding: 6rem 0;
-            background-color: var(--background-dark); /* Dark background */
-            color: var(--text-color-light);
-        }
-
-        .features-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            color: var(--text-color-light)
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
-            gap: 2rem;
-        }
-
-        .feature {
-            background-color: rgba(255, 255, 255, 0.1);  /*  Slightly transparent background */
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);  /*  Subtle shadow */
-            transition: transform 0.3s ease;
-        }
-        .feature:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-        }
-
-        .feature-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-description {
-            font-size: 1rem;
-            color: #ddd;
-        }
-
-        /* Testimonials Section */
-        .testimonials {
-            padding: 6rem 0;
-            background-color: #f9f9f9;
-        }
-
-        .testimonials-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-        }
-
-        .testimonials-slider {
-            /*  Basic styling.  A real slider would require JS (like Swiper.js) */
-            display: flex;
-            overflow-x: auto;  /*  Horizontal scrolling */
-            gap: 2rem;
-            padding-bottom: 2rem; /* Add some padding at the bottom for scrollbar */
-            scroll-snap-type: x mandatory; /* Enable scroll snapping */
-        }
-
-        .testimonial {
-            flex: 0 0 80%; /*  Each testimonial takes 80% of the container width */
-            /* For larger screens, use a fixed width */
-            min-width: 300px;  /* Minimum width */
-            max-width: 400px; /* Maximum width */
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            scroll-snap-align: start; /*  Align to the start when snapping */
-        }
-
-        .testimonial-quote {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            color: #555;
-            font-style: italic;
-        }
-
-        .testimonial-author {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        /* Call to Action (CTA) Section */
-        .cta {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            padding: 4rem 0;
-            color: var(--text-color-light);
-            text-align: center;
-        }
-
-        .cta-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .cta-description {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Footer */
-        .footer {
-            background-color: var(--background-dark);
-            color: #bbb;
-            padding: 3rem 0;
-            text-align: center;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            list-style: none;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links a {
-            text-decoration: none;
-            color: #bbb;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--text-color-light);
-        }
-
-        .footer-copyright {
-            font-size: 0.9rem;
-        }
-
-
-        /*  Hamburger Menu (for mobile) */
-        .hamburger {
-            display: none; /*  Hidden by default */
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none; /* Hide by default on small screens */
-                flex-direction: column; /* Stack links vertically */
-                position: absolute;
-                top: 60px; /*  Position below the header */
-                left: 0;
-                width: 100%;
-                background-color: rgba(255, 255, 255, 0.95); /*  Slightly transparent */
-                backdrop-filter: blur(5px);
-                -webkit-backdrop-filter: blur(5px);
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-                z-index: 50; /* Ensure it's above other content, but below the header */
-                padding: 1rem 0;
-            }
-
-            .nav-links.active {
-              display: flex;
-            }
-
-            .nav-links li{
-                padding: .5rem 0;
-                text-align: center;
-            }
-
-
-            .hamburger {
-                display: block; /*  Show on small screens */
-            }
-
-            .hero {
-                flex-direction: column-reverse; /*  Image on top, content below */
-            }
-
-            .hero-title {
-                font-size: 2.5rem; /*  Smaller font size */
-            }
-
-            .app-store-buttons {
-                justify-content: center; /* Center the buttons */
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr; /*  Single column layout */
-            }
-
-            .testimonial {
-                flex: 0 0 90%; /*  Testimonials take more width */
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-15px);
-            }
-        }
-
-        /*  Progressive Enhancement:  Add more styles here for features that are not widely supported yet */
-        /*  Example:  Using @supports to check for backdrop-filter support */
-        @supports (backdrop-filter: blur(10px)) {
-            .header {
-                /*  Styles for browsers that support backdrop-filter */
-                background: rgba(255, 255, 255, 0.6); /*  Less transparency needed */
-            }
-        }
-    </style>
-
-    <!--  Font Awesome (for icons - optional, but adds a nice touch) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Google Font - Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Google Font - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="header">
-        <div class="container header-content">
-            <a href="#" class="logo">Wanderlust</a>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#pricing">Pricing</a></li>  <!-- Example of another potential section -->
-                    <li><a href="#contact" class="btn-outline">Contact</a></li>
-                </ul>
-                <div class="hamburger">
-                    <i class="fas fa-bars"></i>
-                </div>
-            </nav>
+  <header class="header">
+    <div class="container header-content">
+      <a href="#" class="logo">NomadSwipe</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#contact" class="btn-outline">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+          <i class="fas fa-bars"></i>
         </div>
-    </header>
+      </nav>
+    </div>
+  </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title text-gradient">Explore the World <br> With Ease</h1>
-            <p class="hero-description">
-                Discover new destinations, plan your trips, and share your adventures with Wanderlust.
-                Your perfect travel companion is just a tap away.
-            </p>
-            <div class="app-store-buttons">
-                <a href="https://www.apple.com/app-store/" target="_blank"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store"></a>
-                <a href="https://play.google.com/store/apps" target="_blank"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" style="height: 75px;"></a>  <!-- Adjusted height to be consistent -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title text-gradient">Swipe. Plan. Explore.</h1>
+      <p class="hero-description">
+        Discover your next adventure with our Tinder-style travel app. Swipe through curated spots—restaurants, bars, lodging, and attractions—plan multi-country trips, apply comprehensive filters, collaborate with friends, and explore interactive maps with in-depth ratings. Your journey starts with a swipe.
+      </p>
+      <div class="app-store-buttons">
+        <a href="https://www.apple.com/app-store/" target="_blank">
+          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+        </a>
+        <a href="https://play.google.com/store/apps" target="_blank">
+          <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" style="height: 75px;">
+        </a>
+      </div>
+    </div>
+    <div class="hero-image-container">
+      <img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1917&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Travel illustration" class="hero-image">
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="features-title">Amazing Features</h2>
+      <div class="features-grid">
+        <div class="feature">
+          <i class="feature-icon fas fa-heart"></i>
+          <h3 class="feature-title">Swipe Discovery</h3>
+          <p class="feature-description">Swipe through a curated selection of restaurants, bars, lodging, and attractions to find your perfect destination.</p>
+        </div>
+        <div class="feature">
+          <i class="feature-icon fas fa-plane"></i>
+          <h3 class="feature-title">Multi-Destination Planning</h3>
+          <p class="feature-description">Plan seamless trips across multiple countries and destinations with ease.</p>
+        </div>
+        <div class="feature">
+          <i class="feature-icon fas fa-filter"></i>
+          <h3 class="feature-title">Advanced Travel Filters</h3>
+          <p class="feature-description">Narrow down your options using comprehensive filters tailored to your travel style.</p>
+        </div>
+        <div class="feature">
+          <i class="feature-icon fas fa-users"></i>
+          <h3 class="feature-title">Collaborative Trips</h3>
+          <p class="feature-description">Plan and share trips with friends and family, and collaborate on itineraries.</p>
+        </div>
+        <div class="feature">
+          <i class="feature-icon fas fa-map"></i>
+          <h3 class="feature-title">Interactive Maps & Ratings</h3>
+          <p class="feature-description">Explore interactive maps with detailed ratings and reviews for every location.</p>
+        </div>
+        <div class="feature">
+          <i class="feature-icon fas fa-search"></i>
+          <h3 class="feature-title">Flexible Search</h3>
+          <p class="feature-description">Find the best spots quickly with our intuitive and flexible search capabilities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-subtitle">Getting started with NomadSwipe is simple</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Download</h3>
+          <p class="step-description">Get the app from the App Store or Google Play</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Set Preferences</h3>
+          <p class="step-description">Tell us what you like in a destination</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Swipe & Save</h3>
+          <p class="step-description">Discover places and save your favorites</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3 class="step-title">Plan & Go</h3>
+          <p class="step-description">Create your itinerary and start exploring</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Showcase Section (Integrated from script 2) -->
+  <section class="app-showcase" id="app-showcase">
+    <div class="container">
+      <h2 class="section-title">App Showcase</h2>
+      <p class="section-subtitle">Experience the swipe-based discovery and trip planning</p>
+      <div class="swipe-demo">
+        <div class="card-stack">
+          <!-- Card #1: Tourist Attraction -->
+          <div class="card card-1" style="background-image: url('vegas.jpg'); border: 3px solid #F59342;">
+            <div class="card-content">
+              <div class="card-title">Welcome to Fabulous Las Vegas Sign</div>
+              <div class="card-rating">
+                <span class="stars">★★★★<span style="opacity: 0.5;">★</span></span>
+                <span class="rating-value">4.6</span>
+                <span class="price"></span>
+              </div>
             </div>
-        </div>
-        <div class="hero-image-container">
-          <img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1917&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Travel illustration" class="hero-image">
-        </div>
-    </section>
-
-    <section class="features" id="features">
-        <div class="container">
-            <h2 class="features-title text-center">Amazing Features</h2>
-            <div class="features-grid">
-                <div class="feature">
-                    <i class="feature-icon fas fa-map-marked-alt"></i>
-                    <h3 class="feature-title">Smart Itineraries</h3>
-                    <p class="feature-description">Automatically generated itineraries based on your preferences.</p>
-                </div>
-                <div class="feature">
-                    <i class="feature-icon fas fa-globe-americas"></i>
-                    <h3 class="feature-title">Offline Maps</h3>
-                    <p class="feature-description">Access maps and information even without an internet connection.</p>
-                </div>
-                <div class="feature">
-                    <i class="feature-icon fas fa-users"></i>
-                    <h3 class="feature-title">Community Sharing</h3>
-                    <p class="feature-description">Share your travel experiences and connect with other travelers.</p>
-                </div>
-                <div class="feature">
-                    <i class="feature-icon fas fa-hotel"></i>
-                    <h3 class="feature-title">Hotel Bookings</h3>
-                    <p class="feature-description">Find and book the best hotels directly within the app.</p>
-                </div>
-                <div class="feature">
-                    <i class="feature-icon fas fa-plane"></i>
-                    <h3 class="feature-title">Flight Tracking</h3>
-                    <p class="feature-description">Real-time flight tracking and updates.</p>
-                </div>
-                <div class="feature">
-                    <i class="feature-icon fas fa-language"></i>
-                  <h3 class="feature-title">Multi-language Support</h3>
-                  <p class="feature-description">Use the app in your preffered language</p>
-                </div>
+          </div>
+          <!-- Card #2: Accommodation -->
+          <div class="card card-2" style="background-image: url('bellagio.jpg'); border: 3px solid #42f587;">
+            <div class="card-content">
+              <div class="card-title">Bellagio Hotel & Casino</div>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="rating-value">4.7</span>
+                <span class="price">$$$$</span>
+              </div>
             </div>
-        </div>
-    </section>
-
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <h2 class="testimonials-title text-center">What Our Users Say</h2>
-            <div class="testimonials-slider">
-                <div class="testimonial">
-                    <p class="testimonial-quote">"Wanderlust made planning my trip to Europe so much easier! I loved the offline maps feature."</p>
-                    <p class="testimonial-author">- Sarah J.</p>
-                </div>
-                <div class="testimonial">
-                    <p class="testimonial-quote">"The best travel app I've ever used. The community sharing feature is amazing!"</p>
-                    <p class="testimonial-author">- John D.</p>
-                </div>
-                <div class="testimonial">
-                    <p class="testimonial-quote">"I was able to find great deals on hotels and flights. Highly recommend!"</p>
-                    <p class="testimonial-author">- Emily R.</p>
-                </div>
-                 <div class="testimonial">
-                    <p class="testimonial-quote">"The app is beautifully designed and really easy to use.  Five stars!"</p>
-                    <p class="testimonial-author">- David B.</p>
-                </div>
+          </div>
+          <!-- Card #3: Restaurant -->
+          <div class="card card-3" style="background-image: url('hardrock.jpg'); border: 3px solid #FF66A1;">
+            <div class="card-content">
+              <div class="card-title">Hard Rock Cafe - Las Vegas</div>
+              <div class="card-rating">
+                <span class="stars">★★★<span style="opacity: 0.5;">★★</span></span>
+                <span class="rating-value">4.4</span>
+                <span class="price">$$</span>
+              </div>
             </div>
-        </div>
-    </section>
-
-    <section class="cta" id="contact">
-        <div class="container">
-            <h2 class="cta-title">Start Your Adventure Today</h2>
-            <p class="cta-description">Download Wanderlust and begin exploring the world!</p>
-            <div class="app-store-buttons" style="justify-content: center">
-              <a href="https://www.apple.com/app-store/" target="_blank"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store"></a>
-              <a href="https://play.google.com/store/apps" target="_blank"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" style="height: 75px;"></a>
+          </div>
+          <!-- Card #4: Bar -->
+          <div class="card card-4" style="background-image: url('goldentiki.jpg'); border: 3px solid #4287f5;">
+            <div class="card-content">
+              <div class="card-title">Golden Tiki Bar</div>
+              <div class="card-rating">
+                <span class="stars">★★★★<span style="opacity: 0.5;">★</span></span>
+                <span class="rating-value">4.6</span>
+                <span class="price">$$</span>
+              </div>
             </div>
+          </div>
         </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <ul class="footer-links">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Contact Us</a></li>
-            </ul>
-            <p class="footer-copyright">© 2023 Wanderlust. All rights reserved.</p>
+        <div class="swipe-actions">
+          <div class="swipe-button swipe-left"><i class="fas fa-times"></i></div>
+          <div class="swipe-button swipe-right"><i class="fas fa-heart"></i></div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        //  Hamburger Menu Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <h2 class="testimonials-title">What Our Users Say</h2>
+      <div class="testimonials-slider">
+        <div class="testimonial">
+          <p class="testimonial-quote">"NomadSwipe made planning my trip so effortless! The swipe feature is addictive and the recommendations are spot on."</p>
+          <p class="testimonial-author">- Sarah J.</p>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">"The best travel app I've ever used. Collaborative trips and interactive maps are game-changers!"</p>
+          <p class="testimonial-author">- John D.</p>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">"I discovered amazing spots I never knew existed. Highly recommend NomadSwipe for your next adventure."</p>
+          <p class="testimonial-author">- Emily R.</p>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">"Beautifully designed and super easy to use. NomadSwipe is my go-to travel companion!"</p>
+          <p class="testimonial-author">- David B.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+  <section class="cta" id="contact">
+    <div class="container">
+      <h2 class="cta-title">Start Your Adventure Today</h2>
+      <p class="cta-description">Download NomadSwipe and begin exploring the world with every swipe!</p>
+      <div class="app-store-buttons" style="justify-content: center">
+        <a href="https://www.apple.com/app-store/" target="_blank">
+          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+        </a>
+        <a href="https://play.google.com/store/apps" target="_blank">
+          <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" style="height: 75px;">
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <a href="#" class="footer-logo"><i class="fas fa-route"></i> NomadSwipe</a>
+        <p class="footer-description">Discover the world with NomadSwipe. Your personalized travel companion.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h4 class="footer-title">Company</h4>
+        <div class="footer-links">
+          <a href="#" class="footer-link">About Us</a>
+          <a href="#" class="footer-link">Careers</a>
+          <a href="#" class="footer-link">Press</a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h4 class="footer-title">Help</h4>
+        <div class="footer-links">
+          <a href="#" class="footer-link">FAQ</a>
+          <a href="#" class="footer-link">Support</a>
+          <a href="#" class="footer-link">Terms of Service</a>
+          <a href="#" class="footer-link">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h4 class="footer-title">Contact</h4>
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>123 Main Street, City, Country</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <span>+1 555-123-4567</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <span>info@nomadswipe.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2023 NomadSwipe. All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Hamburger Menu Toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+        }
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
         });
+      });
+    });
 
-        // Smooth scrolling for anchor links (optional, if you want it)
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-          anchor.addEventListener('click', function (e) {
-            e.preventDefault();
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const isClickInsideNav = navLinks.contains(e.target) || hamburger.contains(e.target);
+      if (!isClickInsideNav && navLinks.classList.contains('active')) {
+        navLinks.classList.remove('active');
+      }
+    });
+  </script>
 
-            // Close the mobile menu if it's open
-            if (navLinks.classList.contains('active')) {
-              navLinks.classList.remove('active');
-            }
+  <script>
+    // Swipe functionality for App Showcase cards
+    document.addEventListener('DOMContentLoaded', () => {
+      const swipeLeftBtn = document.querySelector('.swipe-left');
+      const swipeRightBtn = document.querySelector('.swipe-right');
+      const cardStack = document.querySelector('.card-stack');
 
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-              behavior: 'smooth'
-            });
-          });
+      // Helper: update card classes based on new order
+      function updateCardClasses() {
+        const cards = cardStack.querySelectorAll('.card');
+        cards.forEach((card, index) => {
+          card.className = 'card';
+          if (index === 0) {
+            card.classList.add('card-1');
+          } else if (index === 1) {
+            card.classList.add('card-2');
+          } else if (index === 2) {
+            card.classList.add('card-3');
+          } else if (index === 3) {
+            card.classList.add('card-4');
+          }
         });
+      }
 
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-           const isClickInsideNav = navLinks.contains(e.target) || hamburger.contains(e.target);
-
-            if (!isClickInsideNav && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-            }
+      function swipeCard(direction) {
+        const cards = cardStack.querySelectorAll('.card');
+        if (!cards.length) return;
+        const topCard = cards[0];
+        // Add animation class based on direction
+        if (direction === 'left') {
+          topCard.classList.add('swipe-out-left');
+        } else {
+          topCard.classList.add('swipe-out-right');
+        }
+        // When transition ends, move card to bottom and update classes
+        topCard.addEventListener('transitionend', function handler() {
+          topCard.classList.remove('swipe-out-left', 'swipe-out-right');
+          cardStack.appendChild(topCard);
+          updateCardClasses();
+          topCard.removeEventListener('transitionend', handler);
         });
+      }
 
-
-    </script>
+      swipeLeftBtn.addEventListener('click', () => swipeCard('left'));
+      swipeRightBtn.addEventListener('click', () => swipeCard('right'));
+    });
+  </script>
 </body>
 </html>
